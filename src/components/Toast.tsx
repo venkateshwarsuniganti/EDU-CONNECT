@@ -1,0 +1,50 @@
+import React, { useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react';
+
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+interface ToastProps {
+  message: string;
+  type: ToastType;
+  onClose: () => void;
+}
+
+export default function Toast({ message, type, onClose }: ToastProps) {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const icons = {
+    success: <CheckCircle className="w-5 h-5 text-emerald-500" />,
+    error: <XCircle className="w-5 h-5 text-red-500" />,
+    warning: <AlertCircle className="w-5 h-5 text-amber-500" />,
+    info: <Info className="w-5 h-5 text-blue-500" />,
+  };
+
+  const colors = {
+    success: 'border-emerald-100 bg-emerald-50 text-emerald-900',
+    error: 'border-red-100 bg-red-50 text-red-900',
+    warning: 'border-amber-100 bg-amber-50 text-amber-900',
+    info: 'border-blue-100 bg-blue-50 text-blue-900',
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      className={`fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl border shadow-2xl ${colors[type]}`}
+    >
+      {icons[type]}
+      <p className="text-sm font-bold">{message}</p>
+      <button 
+        onClick={onClose}
+        className="ml-4 p-1 hover:bg-black/5 rounded-lg transition-colors"
+      >
+        <X className="w-4 h-4 opacity-50" />
+      </button>
+    </motion.div>
+  );
+}

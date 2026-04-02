@@ -1,0 +1,7 @@
+{
+  "name": "EduConnect",
+  "description": "A platform for students and faculty with role-based authentication.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
